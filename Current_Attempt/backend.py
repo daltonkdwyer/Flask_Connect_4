@@ -76,6 +76,30 @@ class Game():
         self.P2 = Player('Random', 2)
         game_won = 0
 
+    def play_game(self):
+        human_move = app.request.form.get("number")
+
+        while self.B.board_move(int(human_move)) == 0:
+            human_move = request.form.get("number")
+
+        if self.B.check_win() == 1:
+            print("Someone won!")
+
+        random_move = self.P2.make_move()
+        while self.B.board_move(random_move) == 0:
+            random_move = self.P2.make_move()
+
+        if self.B.check_win() == 1:
+            print("Someone won!")
+            app.render_template("endgame.html")
+
+            return "Failure"
+
+
+
+
+
+
     # def play_game(self):
     #     while self.B.check_win() == 0:
     #         if self.B.turn_count % 2:
