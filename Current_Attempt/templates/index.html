@@ -1,78 +1,11 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='styles/style.css') }}">
-    <title> Welcome to Connect 4! </title>
-  </head>
-  <body>
-    <h1>Welcome to Connect 4! </h1>
+<form action="/" method="post">
+  <input name="number">
+</form>
 
-    <form action="/" method="post">
-      <input type="number" name="number">
-      <input type="submit" value="Submit">
-    </form>
+{% extends "layout.html" %}
 
-    <table>
-        <tr>
-          <td class="cell" id=36></td>
-          <td class="cell" id=37></td>
-          <td class="cell" id=38></td>
-          <td class="cell" id=39></td>
-          <td class="cell" id=40></td>
-          <td class="cell" id=41></td>
-          <td class="cell" id=42></td>
-        </tr>
-        <tr>
-          <td class="cell" id=29></td>
-          <td class="cell" id=30></td>
-          <td class="cell" id=31></td>
-          <td class="cell" id=32></td>
-          <td class="cell" id=33></td>
-          <td class="cell" id=34></td>
-          <td class="cell" id=35></td>
-        </tr>
-        <tr>
-          <td class="cell" id=22></td>
-          <td class="cell" id=23></td>
-          <td class="cell" id=24></td>
-          <td class="cell" id=25></td>
-          <td class="cell" id=26></td>
-          <td class="cell" id=27></td>
-          <td class="cell" id=28></td>
-        </tr>
-        <tr>
-          <td class="cell" id=15></td>
-          <td class="cell" id=16></td>
-          <td class="cell" id=17></td>
-          <td class="cell" id=18></td>
-          <td class="cell" id=19></td>
-          <td class="cell" id=20></td>
-          <td class="cell" id=21></td>
-        </tr>
-        <tr>
-          <td class="cell" id=8></td>
-          <td class="cell" id=9></td>
-          <td class="cell" id=10></td>
-          <td class="cell" id=11></td>
-          <td class="cell" id=12></td>
-          <td class="cell" id=13></td>
-          <td class="cell" id=14></td>
-        </tr>
-        <tr>
-          <td class="cell" id=1></td>
-          <td class="cell" id=2></td>
-          <td class="cell" id=3></td>
-          <td class="cell" id=4></td>
-          <td class="cell" id=5></td>
-          <td class="cell" id=6></td>
-          <td class="cell" id=7></td>
-        </tr>
-    </table>
+{% block body %}
 
-<!-- <form name="daltonform" id= "daltonformid" class="" action="/" method="post">
-  <input type="hidden" name = "daltoninput" value="29"/>
-</form> -->
 
     <script>
       const cells = document.querySelectorAll('.cell');
@@ -86,6 +19,7 @@
         {% for move in player_1_list %}
           document.getElementById({{move}}).innerText='X'
         {% endfor %}
+
         {% for move in player_2_list %}
           document.getElementById({{move}}).innerText='O'
         {% endfor %}
@@ -93,18 +27,21 @@
         }
 
       function turnClick(square){
-        console.log(square.target.id);
-        document.getElementById(square.target.id).innerText = 'Z';
+        var form = document.createElement("form");
+        var move = document.createElement("input");
 
-        // document.daltonform.daltoninput.value = square.target.id;
-        // daltonform.submit()
-        // return true;
-        // var form = document.getElementById(square.target.id);
-        // input type="submit" value=square.target.id
+        form.method = "POST";
+        form.action = "/";
+
+        move.value = square.target.id;
+        move.name = "number";
+        form.appendChild(move);
+
+        document.body.appendChild(form);
+        form.submit();
       }
 
     startGame();
 
     </script>
-  </body>
-</html>
+{% endblock %}
