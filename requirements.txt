@@ -1,8 +1,5 @@
 alabaster==0.7.12
 Flask==1.1.2
 gunicorn==20.0.4
-html5lib @ file:///tmp/build/80754af9/html5lib_1593446221756/work
-requests @ file:///tmp/build/80754af9/requests_1592841827918/work
 urllib3==1.25.9
 Werkzeug==1.0.1
-wurlitzer @ file:///opt/concourse/worker/volumes/live/01a17f3d-eafe-4806-57a1-4b9ef5d1815f/volume/wurlitzer_1594753845129/work
