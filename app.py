@@ -7,7 +7,8 @@ G = backend.Game()
 
 @app.route('/', methods=["GET", "POST"])
 def index():
-
+    if G.B.turn_count == 0:
+        G.reset()
     game_won = G.play_game()
 
     if game_won is not None:
