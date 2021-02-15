@@ -8,6 +8,7 @@ class Board():
         self.player_2_set = set()
         self.turn_count = 0
         self.win_conditions = self.create_win_conditions()
+        self.possible_move_list = [1, 2, 3, 4, 5, 6, 7]
 
     def create_win_conditions(self):
         win_condition_list = []
@@ -46,6 +47,11 @@ class Board():
 
         self.move_list.append(int(move))
         self.turn_count += 1
+
+        next_potential_move = move + 7
+        self.possible_move_list.append(int(next_potential_move))
+        self.possible_move_list.remove(move)
+        print("Possible move list: " + str(self.possible_move_list))
 
         print('Turn count: ' + str(self.turn_count))
         print('Move list: ' + str(self.move_list))
@@ -123,3 +129,4 @@ class Game():
         self.B.player_2_set = set()
         self.B.move_list = []
         self.B.turn_count = 0
+        self.B.possible_move_list = [1, 2, 3, 4, 5, 6, 7]

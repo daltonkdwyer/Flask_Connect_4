@@ -10,13 +10,16 @@
     <script>
       const cells = document.querySelectorAll('.cell');
       function startGame(){
+        console.log({{possible_move_list}})
 
-        for (var i = 1; i <= 42; i++){
-          document.getElementById(i).innerText=''
-          document.getElementById(i).addEventListener('click', turnClick, false);
-          }
+        {% for move in possible_move_list %}
+          console.log({{move}});
+          // document.getElementById({{move}}).innerText='';
+          document.getElementById({{move}}).addEventListener('click', turnClick, false);
+        {% endfor %}
 
         {% for move in player_1_list %}
+          console.log({{move}});
           document.getElementById({{move}}).innerText='X'
         {% endfor %}
 
