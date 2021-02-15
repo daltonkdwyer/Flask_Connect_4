@@ -125,8 +125,8 @@ class Game():
             return self.B.check_win(self.P2.player_ID)
 
     def reset(self):
-        self.B.player_1_set = set()
-        self.B.player_2_set = set()
+        self.B.player_1_set.clear()
+        self.B.player_2_set.clear()
         self.B.move_list = []
         self.B.turn_count = 0
         self.B.possible_move_list = [1, 2, 3, 4, 5, 6, 7]
