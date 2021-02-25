@@ -49,9 +49,15 @@
 # current_player_list.append(fruit)
 
 
-a = 10
-def function():
-    if a > 5:
-        return a
+# a = 10
+# def function():
+#     if a > 5:
+#         return a
+#
+# print(function()[0])
 
-print(function()[0])
+import sqlite3
+
+db = sqlite3.connect()
+
+print(db)

@@ -1,5 +1,6 @@
 import random
 import app
+import sqlite3
 
 class Board():
     def __init__(self):
@@ -11,23 +12,32 @@ class Board():
         self.possible_move_list = [1, 2, 3, 4, 5, 6, 7]
 
     def create_win_conditions(self):
-        win_condition_list = []
-        # A = Horizontal, B = Vertical, C = Diagonal Right, D = Diagonal Left
-        win_possibilities = ["A", "B", "C", "D"]
-        # Wincomb_dict Structure = [[starting moves], [add number, how many iterations on current row], [add number to get to next row, how many rows to try]]
-        wincomb_dict = {'A': [[1,2,3,4], [1,4], [7,6]], 'B': [[1,8,15,22],[7,3],[1,7]], 'C': [[1,9,17,25],[1,4],[7,3]], 'D': [[4,10,16,22],[1,4],[7,3]]}
-        for wp in win_possibilities:
-            y = 0
-            for j in range(wincomb_dict[wp][2][1]):
-                x = 0
-                for i in range(wincomb_dict[wp][1][1]):
-                    win_set = set()
-                    for k in range(4):
-                        win_set.add(wincomb_dict[wp][0][k]+x+y)
-                    win_condition_list.append(win_set)
-                    x = x + wincomb_dict[wp][1][0]
-                y = y + wincomb_dict[wp][2][0]
-        return win_condition_list
+        conn = sqlite3.connect('win_combo_db.db')
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute('''CREATE TABLE win_conditions_table('move_one' integer, 'move_two' integer, 'move_three' integer, 'move_four' integer)''')
+
+            win_condition_list = []
+            # A = Horizontal, B = Vertical, C = Diagonal Right, D = Diagonal Left
+            win_possibilities = ["A", "B", "C", "D"]
+            # Wincomb_dict Structure = [[starting moves], [add number, how many iterations on current row], [add number to get to next row, how many rows to try]]
+            wincomb_dict = {'A': [[1,2,3,4], [1,4], [7,6]], 'B': [[1,8,15,22],[7,3],[1,7]], 'C': [[1,9,17,25],[1,4],[7,3]], 'D': [[4,10,16,22],[1,4],[7,3]]}
+            for wp in win_possibilities:
+                y = 0
+                for j in range(wincomb_dict[wp][2][1]):
+                    x = 0
+                    for i in range(wincomb_dict[wp][1][1]):
+                        win_set = set()
+                        for k in range(4):
+                            win_set.add(wincomb_dict[wp][0][k]+x+y)
+                        win_condition_list.append(win_set)
+                        x = x + wincomb_dict[wp][1][0]
+                    y = y + wincomb_dict[wp][2][0]
+        else:
+            pass
+
+        # return win_condition_list
 
     def board_move(self, move, player_ID):
         # Checks to make sure move hasn't been won yet and then goes larger
@@ -51,7 +61,6 @@ class Board():
         next_potential_move = move + 7
         self.possible_move_list.append(int(next_potential_move))
         self.possible_move_list.remove(move)
-        print("Possible move list: " + str(self.possible_move_list))
 
         print('Turn count: ' + str(self.turn_count))
         print('Move list: ' + str(self.move_list))
