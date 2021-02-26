@@ -14,11 +14,9 @@ class Board():
     def create_win_conditions(self):
         conn = sqlite3.connect('win_combo_db.db')
         cursor = conn.cursor()
-
         try:
             cursor.execute('''CREATE TABLE win_conditions_table('move_one' integer, 'move_two' integer, 'move_three' integer, 'move_four' integer)''')
 
-            win_condition_list = []
             # A = Horizontal, B = Vertical, C = Diagonal Right, D = Diagonal Left
             win_possibilities = ["A", "B", "C", "D"]
             # Wincomb_dict Structure = [[starting moves], [add number, how many iterations on current row], [add number to get to next row, how many rows to try]]
@@ -28,16 +26,46 @@ class Board():
                 for j in range(wincomb_dict[wp][2][1]):
                     x = 0
                     for i in range(wincomb_dict[wp][1][1]):
-                        win_set = set()
+                        win_list = []
                         for k in range(4):
-                            win_set.add(wincomb_dict[wp][0][k]+x+y)
-                        win_condition_list.append(win_set)
+                            win_list.append(wincomb_dict[wp][0][k]+x+y)
+
+                        cursor.execute('''INSERT INTO win_conditions_table(move_one, move_two, move_three, move_four) VALUES (?, ?, ?, ?)''', win_list)
+                        conn.commit()
+
+                        # win_condition_list.append(win_set)
                         x = x + wincomb_dict[wp][1][0]
                     y = y + wincomb_dict[wp][2][0]
-        else:
+            conn.close()
+        except:
             pass
 
-        # return win_condition_list
+    def check_win(self, player_ID):
+        conn = sqlite3.connect('win_combo_db.db')
+        cursor = conn.cursor()
+
+        if player_ID == 1:
+            c_player_set = self.player_1_set
+        if player_ID == 2:
+            c_player_set = self.player_2_set
+
+        cursor.execute('''SELECT * FROM win_conditions_table''')
+        all_sets = cursor.fetchall()
+
+        for set in all_sets:
+            if all(item in c_player_set for item in set):
+                return 1, set
+
+        # # Check Win
+        # for set in self.win_conditions:
+        #     if all(item in c_player_set for item in set):
+        #         return 1, set
+        # Check Draw
+        if self.turn_count > 41:
+            return 3, {}
+        # Continue otherwise
+        else:
+            return 0, {}
 
     def board_move(self, move, player_ID):
         # Checks to make sure move hasn't been won yet and then goes larger
@@ -68,22 +96,6 @@ class Board():
         print('Player 2 Set: ' + str(self.player_2_set))
         print('')
 
-    def check_win(self, player_ID):
-        if player_ID == 1:
-            c_player_set = self.player_1_set
-        if player_ID == 2:
-            c_player_set = self.player_2_set
-
-        # Check Win
-        for set in self.win_conditions:
-            if all(item in c_player_set for item in set):
-                return 1, set
-        # Check Draw
-        if self.turn_count > 41:
-            return 3, {}
-        # Continue otherwise
-        else:
-            return 0, {}
 
 class Player():
     def __init__(self, player_type, player_ID):
