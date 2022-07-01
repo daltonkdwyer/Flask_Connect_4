@@ -4,10 +4,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>I'm testing if can send XML to Pi Server</title>
 </head>
 <body>
     <h1>HELLO DALTON!</h1>
+
+    <button type="button" onclick="moveVehicle('FORWARD')">Move Forward</button>
+    <button type="button" onclick="moveVehicle('BACK')">Move Back</button>
+    <button type="button" onclick="moveVehicle('LEFT')">Move Left</button>
+    <button type="button" onclick="moveVehicle('RIGHT')">Move Right</button>
+
+<script>
+    const website = "https://7aba-71-125-233-231.ngrok.io"
+    // The direction comes in from each button
+    function moveVehicle(direction) {
+        var httpRequest = new XMLHttpRequest(),
+        FD = new FormData();
+        FD.append("direction", direction)
+        // What to do with where to send the data?
+        httpRequest.open("POST", website, true);
+        httpRequest.send(FD)
+    }
+</script>
 
     <script>
         console.log("I'm a TEST!!!")
@@ -15,3 +33,6 @@
     
 </body>
 </html>
+
+
+<!-- https://7aba-71-125-233-231.ngrok.io -->
