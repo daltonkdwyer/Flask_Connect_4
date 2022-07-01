@@ -1,0 +1,52 @@
+<form action="/" method="post">
+  <input name="number">
+</form>
+
+<h1>Hello test!</h1>
+
+{% extends "layout.html" %}
+
+{% block body %}
+
+
+    <script>
+      const cells = document.querySelectorAll('.cell');
+      function startGame(){
+        console.log({{possible_move_list}})
+
+        {% for move in possible_move_list %}
+          console.log({{move}});
+          // document.getElementById({{move}}).innerText='';
+          document.getElementById({{move}}).addEventListener('click', turnClick, false);
+        {% endfor %}
+
+        {% for move in player_1_list %}
+          console.log({{move}});
+          document.getElementById({{move}}).innerText='X'
+        {% endfor %}
+
+        {% for move in player_2_list %}
+          document.getElementById({{move}}).innerText='O'
+        {% endfor %}
+
+        }
+
+      function turnClick(square){
+        var form = document.createElement("form");
+        var move = document.createElement("input");
+
+        form.method = "POST";
+        form.action = "/";
+
+        move.value = square.target.id;
+        move.name = "number";
+        form.appendChild(move);
+
+        document.body.appendChild(form);
+        form.submit();
+      }
+
+    startGame();
+
+    </script>
+{% endblock %}
